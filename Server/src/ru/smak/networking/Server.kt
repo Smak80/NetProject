@@ -13,10 +13,12 @@ class Server {
 
     private fun start() {
         val s = ss.accept()
-        val br = BufferedReader(
-            InputStreamReader(s.getInputStream())
-        )
-        println(br.readLine())
-        s.close()
+        if (s!=null) {
+            val br = BufferedReader(
+                InputStreamReader(s.getInputStream())
+            )
+            println(br.readLine())
+            s.close()
+        }
     }
 }
