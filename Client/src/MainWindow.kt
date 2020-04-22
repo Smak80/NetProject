@@ -2,14 +2,18 @@ package ru.smak
 
 import ru.smak.components.GameField
 import java.awt.Color
+import java.awt.Dimension
 import javax.swing.GroupLayout
 import javax.swing.JButton
 import javax.swing.JFrame
+import javax.swing.WindowConstants
 
 class MainWindow : JFrame(){
     val field: GameField
     val btnStart: JButton
     init{
+        defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
+        minimumSize = Dimension(500, 500)
         field = GameField()
         field.background = Color.WHITE
         btnStart = JButton()

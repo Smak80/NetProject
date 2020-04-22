@@ -3,7 +3,6 @@ package ru.smak.components
 import java.awt.Graphics
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
-import java.awt.event.ComponentListener
 import javax.swing.JPanel
 
 class GameField : JPanel(){
@@ -14,33 +13,31 @@ class GameField : JPanel(){
         GameCell.fieldHeight = height
         GameCell.fieldWidth = width
 
-        addComponentListener(object : ComponentAdapter(){
-            override fun componentShown(e: ComponentEvent?) {
-                super.componentShown(e)
-                GameCell.g = graphics
-                GameCell.fieldHeight = height
-                GameCell.fieldWidth = width
-            }
-
-            override fun componentResized(e: ComponentEvent?) {
-                GameCell.fieldHeight = height
-                GameCell.fieldWidth = width
-            }
-        })
-
-        cells = Array<GameCell>(GameCell.ROW_COUNT * GameCell.COL_COUNT)
+        layout = null
+        cells = Array(GameCell.ROW_COUNT * GameCell.COL_COUNT)
                                {
                                    GameCell(
                                        it / GameCell.COL_COUNT,
                                        it % GameCell.COL_COUNT
                                    )
                                }
-    }
+        cells.forEach { add(it) }
 
-    override fun paint(g: Graphics?) {
-        super.paint(g)
-        GameCell.g = g
-        cells.forEach { it.show() }
+        addComponentListener(object : ComponentAdapter(){
+            override fun componentShown(e: ComponentEvent?) {
+                super.componentShown(e)
+                GameCell.fieldHeight = height
+                GameCell.fieldWidth = width
+                cells.forEach { it.updateBounds() }
+            }
+
+            override fun componentResized(e: ComponentEvent?) {
+                GameCell.fieldHeight = height
+                GameCell.fieldWidth = width
+                cells.forEach { it.updateBounds() }
+            }
+        })
+        GameCell.clickRole = Status.X
     }
 
 }
