@@ -10,7 +10,7 @@ import kotlin.math.min
 class GameCell(val row: Int, val col: Int) : JPanel(){
     companion object{
         var clickRole: Status = Status.NONE
-        var clickable: Boolean = false
+        var clickable: Boolean = true
         var fieldWidth: Int = 0
         var fieldHeight: Int = 0
         val ROW_COUNT = 3

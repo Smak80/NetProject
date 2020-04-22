@@ -1,18 +1,21 @@
 package ru.smak.components
 
+import GameData
 import java.awt.Graphics
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import javax.swing.JPanel
 
-class GameField : JPanel(){
+class GameField(val gameData: GameData) : JPanel(){
 
     val cells: Array<GameCell>
 
     init{
         GameCell.fieldHeight = height
         GameCell.fieldWidth = width
-
+        gameData.addOnSetRoleListener {
+            GameCell.clickRole = gameData.clickRole
+        }
         layout = null
         cells = Array(GameCell.ROW_COUNT * GameCell.COL_COUNT)
                                {
@@ -37,7 +40,6 @@ class GameField : JPanel(){
                 cells.forEach { it.updateBounds() }
             }
         })
-        GameCell.clickRole = Status.X
     }
 
 }
