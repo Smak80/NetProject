@@ -1,5 +1,6 @@
 import ru.smak.networking.Server
 
 fun main() {
-    Server()
+    readLine()
+    val s = Server.getInstance()
 }
