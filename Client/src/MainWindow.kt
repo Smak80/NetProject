@@ -1,6 +1,7 @@
 package ru.smak
 
 import ru.smak.components.GameField
+import ru.smak.networking.Client
 import java.awt.Color
 import java.awt.Dimension
 import javax.swing.GroupLayout
@@ -11,15 +12,18 @@ import javax.swing.WindowConstants
 class MainWindow : JFrame(){
     val field: GameField
     val btnStart: JButton
+    var client: Client? = null
+    val gameData = GameData.getInstance()
+
     init{
         defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
         minimumSize = Dimension(500, 500)
-        field = GameField()
+        field = GameField(gameData)
         field.background = Color.WHITE
         btnStart = JButton()
         btnStart.text = "Старт"
         btnStart.addActionListener {
-
+            client = Client(gameData)
         }
         val gl = GroupLayout(contentPane)
         layout = gl
@@ -43,4 +47,9 @@ class MainWindow : JFrame(){
         )
         pack()
     }
+}
+
+fun main() {
+    val wnd = MainWindow()
+    wnd.isVisible = true
 }
