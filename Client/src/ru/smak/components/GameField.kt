@@ -1,6 +1,5 @@
 package ru.smak.components
 
-import java.awt.Graphics
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import javax.swing.JPanel
@@ -37,7 +36,8 @@ class GameField : JPanel(){
                 cells.forEach { it.updateBounds() }
             }
         })
-        GameCell.clickRole = Status.X
+        //GameCell.clickRole = Status.X//////////
+        //GameCell.clickable = true//////////////
     }
 
 }

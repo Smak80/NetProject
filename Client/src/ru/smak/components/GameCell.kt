@@ -34,6 +34,13 @@ class GameCell(val row: Int, val col: Int) : JPanel(){
 
     private val onClick: MutableList<(Int, Int)->Unit> = mutableListOf()
 
+    fun addOnClickListener(l: (Int, Int)->Unit){
+        onClick.add(l)
+    }
+    fun removeOnClickListener(l: (Int, Int)->Unit){
+        onClick.remove(l)
+    }
+
     init{
         addMouseListener(object: MouseAdapter(){
             override fun mouseClicked(e: MouseEvent?) {
