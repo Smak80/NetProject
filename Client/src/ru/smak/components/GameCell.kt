@@ -9,14 +9,23 @@ import kotlin.math.min
 
 class GameCell(val row: Int, val col: Int) : JPanel(){
     companion object{
-        var clickRole: Status = Status.NONE
-        var clickable: Boolean = true
         var fieldWidth: Int = 0
         var fieldHeight: Int = 0
         val ROW_COUNT = 3
         val COL_COUNT = 3
         val FOREGROUND = Color.DARK_GRAY
+
+        private val onClick: MutableList<(Int, Int)->Unit> = mutableListOf()
+
+        fun addOnClickListener(l: (Int, Int)->Unit){
+            onClick.add(l)
+        }
+        fun removeOnClickListener(l: (Int, Int)->Unit){
+            onClick.remove(l)
+        }
     }
+
+    private val gd = GameData.getInstance()
 
     var status: Status = Status.NONE
         set(value){
@@ -32,21 +41,14 @@ class GameCell(val row: Int, val col: Int) : JPanel(){
     val yShift: Int
         get() = (fieldHeight - ROW_COUNT*size)/2 + size*row
 
-    private val onClick: MutableList<(Int, Int)->Unit> = mutableListOf()
-
-    fun addOnClickListener(l: (Int, Int)->Unit){
-        onClick.add(l)
-    }
-    fun removeOnClickListener(l: (Int, Int)->Unit){
-        onClick.remove(l)
-    }
-
     init{
         addMouseListener(object: MouseAdapter(){
             override fun mouseClicked(e: MouseEvent?) {
                 super.mouseClicked(e)
-                if (clickable) {
-                    status = clickRole
+                if (gd.clickable && status == Status.NONE) {
+                    gd.clickable = false
+                    status = gd.clickRole
+                    gd.lastSetPos = Pair(row, col)
                     onClick.forEach { it.invoke(row, col) }
                 }
             }

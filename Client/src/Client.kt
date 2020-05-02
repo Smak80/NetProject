@@ -12,9 +12,10 @@ import kotlin.concurrent.thread
 class Client(val gameData: GameData) {
 
     val s: Socket
-    val br: BufferedReader
-    val pw: PrintWriter
+    private var cmn: Communicator
     var stop: Boolean = false
+    val isAlive
+        get() = !stop && s.isConnected
 
     companion object{
         var port = 5703
@@ -23,17 +24,35 @@ class Client(val gameData: GameData) {
 
     init{
         s = Socket(serverAddress, port)
-        br = BufferedReader(InputStreamReader(s.getInputStream()))
-        pw = PrintWriter(s.getOutputStream())
-        thread{
-            startConnection()
+        cmn = Communicator(s)
+        cmn.addDataRecievedListener(::dataReceived)
+        cmn.start()
+    }
+
+    private fun dataReceived(data: String){
+        val vls = data.split("=", limit=2)
+        if (vls.size == 2){
+            when (vls[0]){
+                "status" -> acceptStatus(vls[1])
+            }
         }
     }
 
-    private fun startConnection() {
-        val v = br.readLine()
-        gameData.clickRole = if (v == "true") Status.X else Status.O
+    private fun acceptStatus(v: String){
+        if (v=="true"){
+            gameData.clickRole = Status.X
+            gameData.clickable = true
+        } else {
+            gameData.clickRole = Status.O
+            gameData.clickable = false
+        }
+    }
 
+    fun sendAction(row: Int, col: Int) {
+        if (cmn.isAlive){
+            val v = "pos=$row;$col"
+            cmn.sendData(v)
+        }
     }
 
 }

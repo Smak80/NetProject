@@ -8,15 +8,18 @@ import javax.swing.JPanel
 
 class GameField(val gameData: GameData) : JPanel(){
 
+    fun addOnClickListener(l: (Int, Int)->Unit) =
+        GameCell.addOnClickListener(l)
+
+    fun removeOnClickListener(l: (Int, Int)->Unit) =
+        GameCell.removeOnClickListener(l)
+
     val cells: Array<GameCell>
 
     init{
+        layout = null
         GameCell.fieldHeight = height
         GameCell.fieldWidth = width
-        gameData.addOnSetRoleListener {
-            GameCell.clickRole = gameData.clickRole
-        }
-        layout = null
         cells = Array(GameCell.ROW_COUNT * GameCell.COL_COUNT)
                                {
                                    GameCell(
@@ -40,8 +43,7 @@ class GameField(val gameData: GameData) : JPanel(){
                 cells.forEach { it.updateBounds() }
             }
         })
-        //GameCell.clickRole = Status.X//////////
-        //GameCell.clickable = true//////////////
+
     }
 
 }
