@@ -23,9 +23,10 @@ class MainWindow : JFrame(){
         btnStart = JButton()
         btnStart.text = "Старт"
         btnStart.addActionListener {
-            client = Client(gameData)
-            if (client!=null) field.addOnClickListener(::cellClicked)
+            client = Client()
+            //if (client!=null) field.addOnClickListener(::cellClicked)
         }
+
         val gl = GroupLayout(contentPane)
         layout = gl
         gl.setHorizontalGroup(
@@ -49,9 +50,9 @@ class MainWindow : JFrame(){
         pack()
     }
 
-    private fun cellClicked(row: Int, col: Int){
+    /*private fun cellClicked(row: Int, col: Int){
         client?.sendAction(row, col)
-    }
+    }*/
 }
 
 fun main() {

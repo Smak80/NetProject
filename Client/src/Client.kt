@@ -1,19 +1,15 @@
 package ru.smak.networking
 
 import GameData
-import ru.smak.MainWindow
 import ru.smak.components.Status
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.io.PrintWriter
 import java.net.Socket
-import kotlin.concurrent.thread
 
-class Client(val gameData: GameData) {
+class Client {
 
     val s: Socket
     private var cmn: Communicator
     var stop: Boolean = false
+    val gameData = GameData.getInstance()
     val isAlive
         get() = !stop && s.isConnected
 
@@ -27,6 +23,7 @@ class Client(val gameData: GameData) {
         cmn = Communicator(s)
         cmn.addDataRecievedListener(::dataReceived)
         cmn.start()
+        gameData.addSetPositionListener(::sendAction)
     }
 
     private fun dataReceived(data: String){
@@ -62,7 +59,7 @@ class Client(val gameData: GameData) {
         }
     }
 
-    fun sendAction(row: Int, col: Int) {
+    private fun sendAction(row: Int, col: Int) {
         if (cmn.isAlive){
             val v = "pos=$row;$col"
             cmn.sendData(v)

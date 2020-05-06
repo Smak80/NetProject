@@ -8,11 +8,11 @@ import javax.swing.JPanel
 
 class GameField(val gameData: GameData) : JPanel(){
 
-    fun addOnClickListener(l: (Int, Int)->Unit) =
+    /*fun addOnClickListener(l: (Int, Int)->Unit) =
         GameCell.addOnClickListener(l)
 
     fun removeOnClickListener(l: (Int, Int)->Unit) =
-        GameCell.removeOnClickListener(l)
+        GameCell.removeOnClickListener(l)*/
 
     val cells: Array<GameCell>
 

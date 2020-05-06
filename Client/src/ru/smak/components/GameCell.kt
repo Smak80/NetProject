@@ -15,14 +15,14 @@ class GameCell(val row: Int, val col: Int) : JPanel(){
         val COL_COUNT = 3
         val FOREGROUND = Color.DARK_GRAY
 
-        private val onClick: MutableList<(Int, Int)->Unit> = mutableListOf()
+        /*private val onClick: MutableList<(Int, Int)->Unit> = mutableListOf()
 
         fun addOnClickListener(l: (Int, Int)->Unit){
             onClick.add(l)
         }
         fun removeOnClickListener(l: (Int, Int)->Unit){
             onClick.remove(l)
-        }
+        }*/
     }
 
     private val gd = GameData.getInstance()
@@ -49,7 +49,7 @@ class GameCell(val row: Int, val col: Int) : JPanel(){
                     gd.clickable = false
                     status = gd.clickRole
                     gd.lastSetPos = Pair(row, col)
-                    onClick.forEach { it.invoke(row, col) }
+                    //onClick.forEach { it.invoke(row, col) }
                 }
             }
         })
