@@ -34,6 +34,7 @@ class Client(val gameData: GameData) {
         if (vls.size == 2){
             when (vls[0]){
                 "status" -> acceptStatus(vls[1])
+                "pos" -> acceptPosition(vls[1])
             }
         }
     }
@@ -45,6 +46,19 @@ class Client(val gameData: GameData) {
         } else {
             gameData.clickRole = Status.O
             gameData.clickable = false
+        }
+    }
+
+    private fun acceptPosition(pos: String){
+        val rc = pos.split(";", limit = 2).map {
+            try{
+                it.toInt()
+            } catch (e: NumberFormatException) {-1}
+        }
+        if (rc.size == 2){
+            if (rc[0]!=-1 && rc[1]!=-1){
+                gameData.lastGotPos = Pair(rc[0], rc[1])
+            }
         }
     }
 

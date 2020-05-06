@@ -20,6 +20,7 @@ class GameField(val gameData: GameData) : JPanel(){
         layout = null
         GameCell.fieldHeight = height
         GameCell.fieldWidth = width
+        GameData.getInstance().addGotPositionListener(::onExternalClick)
         cells = Array(GameCell.ROW_COUNT * GameCell.COL_COUNT)
                                {
                                    GameCell(
@@ -46,4 +47,16 @@ class GameField(val gameData: GameData) : JPanel(){
 
     }
 
+    private fun onExternalClick(row: Int, col: Int) {
+        val cid = getCellId(row, col)
+        if (cid >= 0 && cid < cells.size && cells[cid].status == Status.NONE){
+            cells[cid].status =
+                if (GameData.getInstance().clickRole == Status.X) Status.O
+                else Status.X
+            GameData.getInstance().clickable = true
+        }
+    }
+
+    private fun getCellId(row: Int, col: Int): Int =
+        row * GameCell.COL_COUNT + col
 }

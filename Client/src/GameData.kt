@@ -13,4 +13,20 @@ class GameData private constructor(){
 
     var lastSetPos: Pair<Int, Int> = Pair(-1, -1)
 
+    private val onGotPosition = mutableListOf<(Int, Int)->Unit>()
+
+    fun addGotPositionListener(l: (Int, Int)->Unit){
+        onGotPosition.add(l)
+    }
+
+    fun removeGotPositionListener(l: (Int, Int)->Unit){
+        onGotPosition.remove(l)
+    }
+
+    var lastGotPos: Pair<Int, Int> = Pair(-1, -1)
+    set(value) {
+        field = value
+        onGotPosition.forEach { it.invoke(field.first, field.second) }
+    }
+
 }
